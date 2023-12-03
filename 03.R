@@ -33,19 +33,18 @@ x_ |>
 
 pn_tbl
 #> # A tibble: 10 × 4
-#>    num    line start   end
-#>    <chr> <int> <int> <int>
-#>  1 467       1     1     3
-#>  2 114       1     6     8
-#>  3 35        3     3     4
-#>  4 633       3     7     9
-#>  5 617       5     1     3
-#>  6 58        6     8     9
-#>  7 592       7     3     5
-#>  8 755       8     7     9
-#>  9 664      10     2     4
-#> 10 598      10     6     8
-
+#>      num  line start   end
+#>    <dbl> <int> <int> <int>
+#>  1   467     1     1     3
+#>  2   114     1     6     8
+#>  3    35     3     3     4
+#>  4   633     3     7     9
+#>  5   617     5     1     3
+#>  6    58     6     8     9
+#>  7   592     7     3     5
+#>  8   755     8     7     9
+#>  9   664    10     2     4
+#> 10   598    10     6     8
 
 # collect all symbols with line / loc
 x_ |> str_match_all("[^\\d\\.]") |> unlist() -> sym_matches
@@ -76,8 +75,20 @@ pn_sym_join <-
   inner_join(x = pn_tbl, y = _, by = join_by(between(x$line, y$line_min, y$line_max),
                                              overlaps(x$start, x$end, y$start, y$end)))
 pn_sym_join
+#> # A tibble: 8 × 11
+#>     num line.x start.x end.x sym   line.y   loc line_min line_max start.y end.y
+#>   <dbl>  <int>   <int> <int> <chr>  <int> <int>    <dbl>    <dbl>   <dbl> <dbl>
+#> 1   467      1       1     3 *          2     4        1        3       3     5
+#> 2    35      3       3     4 *          2     4        1        3       3     5
+#> 3   633      3       7     9 #          4     7        3        5       6     8
+#> 4   617      5       1     3 *          5     4        4        6       3     5
+#> 5   592      7       3     5 +          6     6        5        7       5     7
+#> 6   755      8       7     9 *          9     6        8       10       5     7
+#> 7   664     10       2     4 $          9     4        8       10       3     5
+#> 8   598     10       6     8 *          9     6        8       10       5     7
 
 sum(pn_sym_join$num)
+#> [1] 4361
 
 # 2 -----------------------------------------------------------------------
 # A gear is any * symbol that is adjacent to exactly two part numbers. 
