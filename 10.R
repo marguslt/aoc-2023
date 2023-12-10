@@ -101,7 +101,7 @@ edge_tbl <- bind_rows(
   edge_tbl, 
   select(edge_tbl[edge_tbl$to == start_idx, ], from = to, to = from))
 
-# tidygraph seems to strugge with integere id-s when they do not fill the whole
+# tidygraph seems to struggle with integer id-s when they do not fill the whole
 # space, hence build with igraph
 g <- graph_from_data_frame(edge_tbl, directed = TRUE, vertices = node_tbl) |> 
   as_tbl_graph()
@@ -146,7 +146,7 @@ grid_points_sfc <-
 
 plot(grid_points_sfc)
 
-# maze plolygon, sfc; left join to first sort the coordinates in the order of 
+# maze polygon, sfc; left join to first sort the coordinates in the order of 
 # girth(g_sub)$circle for proper maze shape
 maze_poly_sfc <- 
   left_join(tibble(name = names(ordered_nodes)),maze_points) |>
